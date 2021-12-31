@@ -1,2 +1,2 @@
 # Random-functions
-I have created this repository to share my own functions that can be useful for everyone
+In this repository I will share some of my own functions that can be useful for other people. 
