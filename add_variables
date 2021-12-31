@@ -32,7 +32,9 @@ mtcars <- add_variables(df = mtcars, v = my_operations, fun=sum )
 #' 
 #' my_variables <- c("cyl_disp"= "cyl, disp,  hp",
 #'                   "cyl_dips_hp"= "cyl +disp+ hp" )
-#' add_variables(mtcars,my_variables)
+#' add_variables(mtcars,my_variables) # calculate the sum
+#' add_variables(mtcars,my_variables, fun=mean) #calculate the mean
+
 
 ##### The Function:
 
