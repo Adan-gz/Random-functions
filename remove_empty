@@ -29,12 +29,12 @@ remove_empty <- function(df,dim=c("r","c","rc","cr")){
     df <- df[-which(ind==1),]
   }
   else if(dim=='c'){
-    ind <- purrr::map_dbl(1:ncol(df), \(i) sum(is.na(df[,i])) == nrow(df) ) 
+    ind <- purrr::map_dbl(seq_along(df), \(i) sum(is.na(df[,i])) == nrow(df) ) 
     df <- df[, -which(ind==1)]
   }
   else{
     ind_r <- purrr::map_dbl(1:nrow(df), \(i) sum(is.na(df[i,])) == ncol(df) ) 
-    ind_c <- purrr::map_dbl(1:ncol(df), \(i) sum(is.na(df[,i])) == nrow(df) ) 
+    ind_c <- purrr::map_dbl(seq_along(df), \(i) sum(is.na(df[,i])) == nrow(df) ) 
     df <- df[-which(ind_r==1),-which(ind_c==1)]
   }
   return(df)
