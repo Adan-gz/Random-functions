@@ -29,9 +29,11 @@ impVarLinReg <- function(mod){
     return(cont)
   })
   names(cont) <- mod_terms
+  cont <- sort(cont,TRUE)
   return(cont)
 } 
 
 ## Example:
 mod <- lm(mpg~.,data=mtcars)
-impVarLinReg(mod)
+imp_var <- impVarLinReg(mod)
+barplot(imp_var)
