@@ -13,9 +13,9 @@ impVarLinReg <- function(mod){
   SSE.mod <- mod_anova$sumsq[mod_anova$term=='Residuals'] 
   
   ## extract coef terms, Dependent variable and data
-  mod_terms <- names(mod$coefficients)[-1] # términos
+  mod_terms <- names(mod$coefficients)[-1] # terms except intercept
   vd <- gsub('^(.*?)= ','',capture.output(mod$call) )
-  vd <- gsub(' ~(.*?)$','',vd) # variable dependiente
+  vd <- gsub(' ~(.*?)$','',vd) # dependent variable
   df <- mod$model # data
 
   # calculate contribution (it is calculated as many models as terms,
