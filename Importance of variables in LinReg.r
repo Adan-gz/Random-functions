@@ -22,7 +22,7 @@ impVarLinReg <- function(mod){
   # but extracting one of the terms each time)
   cont <- map(mod_terms, function(x){
     reg_terms <- mod_terms[mod_terms != x ]
-    reg <- lm( as.formula(paste0(vd,'~', str_flatten(reg_terms,'+'))), data=df  )
+    reg <- lm( as.formula(paste0(vd,'~', paste0(reg_terms,collapse = '+'))), data=df  )
     reg_anova <- broom::tidy(anova(reg))
     SSE <- reg_anova$sumsq[reg_anova$term=='Residuals'] # (Residual Sum of Squares 
     cont <- (SSE-SSE.mod)/SSE
