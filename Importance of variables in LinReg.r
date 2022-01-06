@@ -7,7 +7,7 @@
 
 #### The function:
 
-impVarLinReg <- function(mod){
+lm_contribution <- function(mod, sort=TRUE){
   ## extract SSE 
   mod_anova <- broom::tidy(anova(mod))
   SSE.mod <- mod_anova$sumsq[mod_anova$term=='Residuals'] 
@@ -29,11 +29,11 @@ impVarLinReg <- function(mod){
     return(cont)
   })
   names(cont) <- mod_terms
-  cont <- sort(cont,TRUE)
+  if(sort==TRUE) cont <- sort(cont,TRUE)
   return(cont)
 } 
 
 ## Example:
 mod <- lm(mpg~.,data=mtcars)
-imp_var <- impVarLinReg(mod)
+imp_var <- lm_contribution(mod)
 barplot(imp_var)
