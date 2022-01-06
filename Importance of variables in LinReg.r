@@ -21,8 +21,8 @@ impVarLinReg <- function(mod){
   # calculate contribution (it is calculated as many models as terms,
   # but extracting one of the terms each time)
   cont <- map(mod_terms, function(x){
-    mod_terms <- mod_terms[mod_terms != x ]
-    reg <- lm( as.formula(paste0(vd,'~', str_flatten(mod_terms,'+'))), data=df  )
+    reg_terms <- mod_terms[mod_terms != x ]
+    reg <- lm( as.formula(paste0(vd,'~', str_flatten(reg_terms,'+'))), data=df  )
     reg_anova <- broom::tidy(anova(reg))
     SSE <- reg_anova$sumsq[reg_anova$term=='Residuals'] # (Residual Sum of Squares 
     cont <- (SSE-SSE.mod)/SSE
