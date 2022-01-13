@@ -4,7 +4,9 @@
 # After creating one weighting vector for each desired variable, these vectors are multiplied in order to 
 # obtain the unique weighting vector for the data.
 
-###### The function
+################
+# The function #
+################
 
 #' Create a vector of weights
 #' 
@@ -43,8 +45,9 @@ simple_weighting <- function(data, population,return_df=TRUE){
   return(data)
 }
 
-##### An example:
-
+###############
+# An example: #
+###############
 ### fake data
 set.seed(7)
 data <- tibble(
