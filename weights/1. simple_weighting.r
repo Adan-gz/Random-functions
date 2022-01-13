@@ -24,7 +24,7 @@
 #'  A dataframe or a numeric vector depending on return_df parameter.
 
 simple_weighting <- function(data, population,return_df=FALSE){
-  if( all(is.data.frame(data), is.list(population),is.logical(return_df)) == TRUE ){
+  if( all(is.data.frame(data), is.list(population),is.logical(return_df)) != TRUE ){
     rlang::abort('Check the class of your parameters')}
   if( all(names(population) %in% names(data)) == FALSE ){
     rlang::abort("Variable and population names don't match. Check list names.")}
