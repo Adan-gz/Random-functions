@@ -1,4 +1,4 @@
-# In this file I share two functions to facilitate weighting your data. First of all, a function to apply simple weighting,
+# In this branch I share two functions to facilitate weighting your data. Here, a function to apply simple weighting,
 # i.e. if in the population there 50% males and 50% females but in your sample the values are 60% and 40%, 
 # giving more weight to females and less to males when calculating any summary stats. 
 # After creating one weighting vector for each desired variable, these vectors are multiplied in order to 
