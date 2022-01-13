@@ -78,6 +78,8 @@ check_simple_weighting <- function(df,var){
 }
 check_simple_weighting(data,'gender')
 check_simple_weighting(data,'age')
+  
+ # The weighted proportions of party votes are the estimation
 check_simple_weighting(data,'vote')
 
   
