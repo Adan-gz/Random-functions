@@ -49,12 +49,15 @@ simple_weighting <- function(data, population,return_df=TRUE){
 set.seed(7)
 data <- tibble(
   'gender' = as.factor(sample(c('F','M'),350,T,c(.3,.8))) ,
-  'age'= as.factor(sample(c('25','45','55'),350,T,c(.7,.2,.1))),
+  'age'= as.factor(sample(c('18-35','36-65','66-100'),350,T,c(.7,.2,.1))),
   'vote'= sample(c('PP','PSOE','UP'),350,T,c(.4,.45,.15))
   
 ### population distributions of gender and age 
+## the list elements (gender and age in this case) are named equal to the variables
+## for weighting. Inside each element you create a named vector with 'c', writing
+## the label = population proportion:
 population <- list( 'gender' = c('M'=.5,'F'=.5),
-                    'age' = c('25'=.50,'55'=.25,'45'=.25) )
+                    'age' = c('18-35'=.50,'66-100'=.25,'36-65'=.25) )
                     
 ### new dataframe with the vector of weights based on gender and age
 data <- simple_weighting(data = data, population = population)
@@ -73,3 +76,5 @@ check_simple_weighting <- function(df,var){
 check_simple_weighting(data,'gender')
 check_simple_weighting(data,'age')
 check_simple_weighting(data_w,'vote')
+
+  
