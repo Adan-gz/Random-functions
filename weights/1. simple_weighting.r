@@ -78,6 +78,6 @@ check_simple_weighting <- function(df,var){
 }
 check_simple_weighting(data,'gender')
 check_simple_weighting(data,'age')
-check_simple_weighting(data_w,'vote')
+check_simple_weighting(data,'vote')
 
   
