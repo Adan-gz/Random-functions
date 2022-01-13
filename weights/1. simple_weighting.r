@@ -18,12 +18,12 @@
 #'    population proportions.
 #' @param return_df TRUE if the desired output if the dataframe with one more
 #'    column: the vector of weights. If FALSE returns only the vector. 
-#'    By default is TRUE. 
+#'    By default is FALSE. 
 #'
 #' @return
 #'  A dataframe or a numeric vector depending on return_df parameter.
 
-simple_weighting <- function(data, population,return_df=TRUE){
+simple_weighting <- function(data, population,return_df=FALSE){
   if( all(names(population) %in% names(data)) == FALSE ){
     rlang::abort("Variable and population names don't match. Check list names.")}
   df <- data[,names(population)]
@@ -63,10 +63,10 @@ population <- list( 'gender' = c('M'=.5,'F'=.5),
                     'age' = c('18-35'=.50,'66-100'=.25,'36-65'=.25) )
                     
 ### new dataframe with the vector of weights based on gender and age
-data <- simple_weighting(data = data, population = population)
-  ## you can do as well:
-  #data$weights <- simple_weighting(data, population,FALSE)
-  #data <- data %>% mutate(weights=simple_weighting(data, population,FALSE))
+data$weights <- simple_weighting(data, population)
+    ## you can do as well:
+  #data <- simple_weighting(data = data, population = population, TRUE)
+  #data <- data %>% mutate(weights=simple_weighting(data, population))
 
 ### check function behaviour
 check_simple_weighting <- function(df,var){
