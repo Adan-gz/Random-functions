@@ -14,42 +14,52 @@
 #' is obtained to equalize said distribution. 
 #'
 #' @param data A dataframe or tibble.
-#' @param population A list with named vectors. Each vector contains the 
-#'    population proportions.
+#' @param population Two options: a list with named vectors OR a list of lists with named vectors. 
+#'                   Each vector contains the population proportions. Use a list of lists if you 
+#'                   want to try different weighting options. See examples.
 #' @param return_df TRUE if the desired output if the dataframe with one more
 #'    column: the vector of weights. If FALSE returns only the vector. 
 #'    By default is FALSE. 
 #'
 #' @return
-#'  A dataframe or a numeric vector depending on return_df parameter.
+#'  A dataframe or a numeric vector depending on return_df parameter. If population is a list of lists
+#'  it is returned a list with vectors or dataframes. 
 
 simple_weighting <- function(data, population,return_df=FALSE){
   if( all(is.data.frame(data), is.list(population),is.logical(return_df)) != TRUE ){
     rlang::abort('Check the class of your parameters')}
-  if( all(names(population) %in% names(data)) == FALSE ){
-    rlang::abort("Variable and population names don't match. Check list names.")}
-  df <- data[,names(population)]
   
-  weights <- purrr::map(names(population), function(i){
-    if( all( names(population[[i]]) %in% unique(df[[i]]) ) == FALSE ){
-      rlang::abort("Variable and population target levels don't match. Check named vectors in the list.")}
-    
-    sample <- prop.table(table(df[[i]]))
-    population <- population[[i]][names(sample)]
-    weights <- population/sample
-    weights <- weights[ df[[i]] ]
+  if( is.list(population[[1]]) == FALSE ){
+    if( all(names(population) %in% names(data)) == FALSE ){
+      rlang::abort("Variable and population names don't match. Check list names.")}
+    df <- data[,names(population)]
+    weights <- purrr::map(names(population), function(i){
+      if( all( names(population[[i]]) %in% unique(df[[i]]) ) == FALSE ){
+        rlang::abort("Variable and population target levels don't match. Check named vectors in the list.")}
+      
+      sample <- prop.table(table(df[[i]]))
+      population <- population[[i]][names(sample)]
+      weights <- population/sample
+      weights <- weights[ df[[i]] ]
+      return(weights)
+    } )
+    weights <- apply(dplyr::bind_cols(weights),1,prod)
+    if(return_df==FALSE) return(weights)
+    data$weights <- weights
+    return(data)
+  }
+  else if( is.list(population[[1]]) == TRUE ){
+    weights <- purrr::map(seq_along(posible_targets),
+                          ~ simple_weighting(data, posible_targets[[.x]],
+                          return_df=return_df))
+    names(weights) <- names(population)
     return(weights)
-  } )
-  names(weights) <- names(population)
-  weights <- apply(dplyr::bind_cols(weights),1,prod)
-  if(return_df==FALSE) return(weights)
-  data$weights <- weights
-  return(data)
+  }
 }
 
-###############
-# An example: #
-###############
+################
+# 1st example: #
+################
 ### fake data
 set.seed(7)
 data <- tibble(
@@ -84,4 +94,27 @@ check_simple_weighting(data,'age')
  # The weighted proportions of party votes are the estimation
 check_simple_weighting(data,'vote')
 
-  
+##############################
+# 2nd example: list of lists #
+############################## 
+  # sample:
+set.seed(7)
+data <- tibble(
+  'gender' = as.factor(sample(c('F','M'),350,T,c(.3,.8))) ,
+  'age'= as.factor(sample(c('18-35','36-65','66-100'),350,T,c(.7,.2,.1))),
+  'studies' = sample(c('High','Other'),350,T,c(.45,.55)),
+  'vote'= sample(c('PP','PSOE','UP'),350,T,c(.4,.45,.15)))
+
+   # first option to weight for
+target1 <- list( 'gender' = c('M'=.5,'F'=.5),
+                  'age' = c('18-35'=.50,'66-100'=.25,'36-65'=.25) )
+  # second one
+target2 <- list( 'gender' = c('M'=.5,'F'=.5),
+              'age' = c('18-35'=.50,'66-100'=.25,'36-65'=.25),
+              'studies' = c('High'=.3, 'Other'=.7))
+ # combine the two of them in a list
+posible_targets <- list( 'target1'=target1, 'target2'=target2  )
+
+simple_weighting(data,posible_targets) # return the vector of weights
+simple_weighting(data,posible_targets,TRUE) # return dataframes
+
