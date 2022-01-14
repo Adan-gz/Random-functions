@@ -1,3 +1,7 @@
+### The function is being checked
+
+
+
 # In R there is a package so-called anesrake who implements the raking algorithm to weight. 
 # You only have to take into account minor details to use its function, but I give you a function
 # to simplify the process if you are not very familiar with R programming. 
