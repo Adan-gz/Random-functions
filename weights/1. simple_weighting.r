@@ -49,8 +49,8 @@ simple_weighting <- function(data, population,return_df=FALSE){
     return(data)
   }
   else if( is.list(population[[1]]) == TRUE ){
-    weights <- purrr::map(seq_along(posible_targets),
-                          ~ simple_weighting(data, posible_targets[[.x]],
+    weights <- purrr::map(seq_along(population),
+                          ~ simple_weighting(data, population[[.x]],
                           return_df=return_df))
     names(weights) <- names(population)
     return(weights)
