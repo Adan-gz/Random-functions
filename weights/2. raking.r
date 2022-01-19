@@ -12,7 +12,7 @@
 
 #' Create a vector of weights with raking algorithm
 #' 
-#' Internally it is called to \code{anesrake::anesrake} function.
+#' Internally it is called to \code{anesrake::anesrake} function. 
 #'
 #' @param data A dataframe or tibble.
 #' @param population A named list with named vectors of population
