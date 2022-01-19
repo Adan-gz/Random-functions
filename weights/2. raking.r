@@ -46,21 +46,22 @@ weight_anesrake <- function(data,population,...){
 
 ###############
 # An example: #
-###############
-set.seed(7)
-data <- dplyr::tibble(  # fake data
-  'gender' = sample(c('F','M'),350,T,c(.3,.8)) ,
-  'age'= sample(c('25','45','55'),350,T,c(.7,.2,.1)),
+############### 
+library(dplyr);set.seed(7)
+data <- data.frame(  
+  'gender' = sample(c('F','M'),350,T,c(.3,.7)),# e.g., our sample has 30% of Females and 70% of Males
+  'age'= sample(c('18-35','36-65','66-100'),350,T,c(.7,.2,.1)),
   'studies' = sample(c('High','Other'),350,T,c(.45,.55)),
-  'vote'= sample(c('PP','PSOE','UP'),350,T,c(.4,.45,.15))
-)
-targets <- list( 'gender' = c('M'=.5,'F'=.5),
-                 'age' = c('25'=.50,'55'=.25,'45'=.25))
-data$weights <- weight_anesrake(data, population = targets)
+  'vote'= sample(c('PP','PSOE','UP'),350,T,c(.4,.45,.15)))
+ # we want to weigth by gender and age
+targets <- list( 'gender' = c('M'=.5,'F'=.5),# but population is 50%-50%
+                 'age' = c('18-35'=.50,'66-100'=.25,'36-65'=.25))
 
-library(dplyr)
-data %>% count(vote) %>% mutate(p=n/sum(n))
-data %>% count(vote,wt = weights) %>% mutate(p=n/sum(n))
+data$weights <- weight_anesrake(data, population = targets) # add weights to our data
+
+library(dplyr) 
+data %>% count(vote) %>% mutate(p=n/sum(n)) # vote proportion without weighting
+data %>% count(vote,wt = weights) %>% mutate(p=n/sum(n)) # with weights
 
 #########################
 # More than one option: #
@@ -75,7 +76,7 @@ target3 <- list( 'gender' = c('M'=.5,'F'=.5),
 posible_targets <- list('target1'=target1, 'target2'=target2,
                         'target3'=target3)
 list_weigths <- weight_anesrake(data,posible_targets)
-df_weights <- bind_cols(list_weights) # dataframe with weights
+df_weights <- bind_cols(list_weigths) # dataframe with weights
 data <- data %>% bind_cols( df_weights ) # bind with data
 
  # our estimation:
@@ -83,12 +84,6 @@ data %>% count(vote,wt = target1) %>% mutate(p=n/sum(n))
 data %>% count(vote,wt = target2) %>% mutate(p=n/sum(n))
 data %>% count(vote,wt = target3) %>% mutate(p=n/sum(n))
 
- 
- 
- 
- 
- 
- 
  
  
  
