@@ -1,7 +1,3 @@
-### The function is being checked
-
-
-
 # In R there is a package so-called anesrake who implements the raking algorithm to weight. 
 # You only have to take into account minor details to use its function, but I give you a function
 # to simplify the process if you are not very familiar with R programming. 
@@ -82,7 +78,11 @@ list_weigths <- weight_anesrake(data,posible_targets)
 df_weights <- bind_cols(list_weights) # dataframe with weights
 data <- data %>% bind_cols( df_weights ) # bind with data
 
- 
+ # our estimation:
+data %>% count(vote,wt = target1) %>% mutate(p=n/sum(n))
+data %>% count(vote,wt = target2) %>% mutate(p=n/sum(n))
+data %>% count(vote,wt = target3) %>% mutate(p=n/sum(n))
+
  
  
  
