@@ -75,8 +75,8 @@ target3 <- list( 'gender' = c('M'=.5,'F'=.5),
                  'studies' = c('High'=.3, 'Other'=.7))
 posible_targets <- list('target1'=target1, 'target2'=target2,
                         'target3'=target3)
-list_weigths <- weight_anesrake(data,posible_targets)
-df_weights <- bind_cols(list_weigths) # dataframe with weights
+list_weights <- weight_anesrake(data,posible_targets)
+df_weights <- bind_cols(list_weights) # dataframe with weights
 data <- data %>% bind_cols( df_weights ) # bind with data
 
  # our estimation:
